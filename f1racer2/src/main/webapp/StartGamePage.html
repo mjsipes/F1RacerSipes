@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Start Game - F1 Racer</title>
+    <style>
+        body {
+            font: 100% Lucida Sans, Verdana;
+            margin: 0;
+            padding: 0;
+            background: url('racetrack-background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            height: 50px;
+            margin-right: 20px;
+        }
+
+        h2 {
+            color: #e74c3c;
+            margin: 0;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #e74c3c;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #e74c3c;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .topic-box {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="F1RacerLogo.png" alt="F1 Racer Logo">
+            <h2>Set Up Your Race</h2>
+        </div>
+        <form id="startGameForm" action="f1racerServlet" method="post" >
+			
+			<label for="gameServerName">Game Server Name</label>
+			<input type="text" id="gameServerName" name="gameServerName" class="topic-box" placeholder="Enter name for your game server" required>
+			
+            <label for="difficulty">Difficulty Level (1-10)</label>
+            <input type="range" id="difficulty" name="difficulty" min="1" max="10" class="slider">
+
+            <label for="promptType">Prompt Type</label>
+            <input type="text" id="customTopic" name="customTopic" class="topic-box" placeholder="Enter custom topic. Leave blank to default to random.">
+
+            <button type="submit" formaction="GamingPage.html" class="button">Start Game</button>
+        </form>
+    </div>
+
+    <script>
+       	document.getElementById('startGameForm').addEventListener('submit', function(event) {
+		var action = "StartGamePageServlet";
+        var gameServerName = document.getElementById('gameServerName').value;
+        var difficulty = document.getElementById('difficulty').value;
+        var customTopic = document.getElementById('customTopic').value;
+
+        // Create an AJAX request to submit the form data
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'f1racerServlet', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        
+        xhr.send('action=' + encodeURIComponent(action) + '&gameServerName=' + encodeURIComponent(gameServerName)
+         + '&difficulty=' + encodeURIComponent(difficulty)+ '&customTopic=' + encodeURIComponent(customTopic));
+    });
+    </script>
+</body>
+</html>

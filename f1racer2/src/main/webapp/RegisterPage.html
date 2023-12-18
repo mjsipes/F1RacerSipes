@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register for F1 Racer</title>
+    <style>
+        body {
+            font: 100% Lucida Sans, Verdana;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            line-height: 1.6;
+        }
+
+        .container {
+            background: #fff;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #e74c3c;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input[type=text],
+        input[type=email],
+        input[type=password] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .checkbox {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox input {
+            margin-right: 10px;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background-color: #c0392b;
+        }
+
+        .terms {
+            font-size: 14px;
+        }
+        
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Register for F1 Racer</h2>
+        <form id="registerForm" action="f1racerServlet" method="post" onsubmit="return validateForm()">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <!--label for="email">Email</label-->
+            <!--input type="email" id="email" name="email" required-->
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+
+            <div class="checkbox">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms" class="terms">I accept the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>.</label>
+            </div>
+
+            <button type="submit" class="button">Register</button>
+        </form>
+    </div>
+    
+    <script>
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirm_password").value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords don't match.");
+                return false;
+            }
+            return true;
+        }
+        
+		document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var action = "RegisterPageServlet";
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        // Validate passwords
+        if (!validateForm()) {
+            return; // Stop submission if passwords don't match
+        }
+
+        // Create an AJAX request to submit the form data
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'f1racerServlet', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+                if (response.status === 'success') {
+                    window.location.href = 'PreGamingPage.html';
+                } else if (response.status === 'username_exists') {
+                    // Display error message specifically for existing username
+                    displayErrorMessage('Username already exists');
+                } else {
+                    // Display a generic error message for other types of failures
+                    displayErrorMessage('Registration failed');
+                }
+            }
+        };
+        xhr.send('action=' + encodeURIComponent(action) + '&username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password));
+    });
+
+    function displayErrorMessage(message) {
+        var errorMessage = document.querySelector('.error-message');
+        if (!errorMessage) {
+            errorMessage = document.createElement('p');
+            errorMessage.classList.add('error-message');
+            document.querySelector('.container').insertBefore(errorMessage, document.querySelector('.container').firstChild);
+        }
+        errorMessage.textContent = message;
+    }
+    </script>
+</body>
+</html>

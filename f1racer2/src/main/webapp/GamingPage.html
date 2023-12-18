@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gaming - F1 Racer</title>
+	<script src="f1.js"></script>
+	
+    <style>
+        body {
+            font: 100% Lucida Sans, Verdana;
+            margin: 20px;
+            line-height: 26px;
+            background-color: #f4f4f4;
+        }
+
+        .wrapper {
+            position: relative;
+            overflow: auto;
+            max-width: 800px;
+            margin: auto;
+            border: 2px solid #e74c3c; /* Red border */
+            border-radius: 8px; /* Rounded corners for the wrapper */
+            padding: 20px; /* Padding inside the wrapper */
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .header h1 {
+            color: #e74c3c; /* Red color for the text */
+            margin-left: 10px; /* Spacing after the image */
+        }
+        
+
+        
+        .game-stats {
+            font-size: 80%; /* Smaller font size for game statistics */
+            color: #e74c3c;
+            margin-left: 10px;
+            margin-top: 10px; /* Spacing from the title */
+        }
+
+        .header img {
+            height: 50px;
+        }
+
+        .racetrack-image {
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            border-radius: 8px; /* Rounded corners for the image */
+        }
+
+        .button {
+            display: block;
+            padding: 15px 25px;
+            margin: 20px auto;
+            border: 1px solid #d4d4d4;
+            background-color: #e74c3c;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            width: 200px; /* Set a fixed width for buttons */
+        }
+
+        .button:hover {
+            background-color: #c0392b;
+        }
+        
+        
+                table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+        
+        
+
+        /* Style for navigation bar */
+        .navbar {
+            background-color: #e74c3c; /* Red background */
+            overflow: hidden;
+            padding: 10px 0;
+            margin-bottom: 20px; /* Spacing from the title */
+            border-radius: 10px; /* Round borders */
+
+
+        }
+
+        .navbar a {
+            float: left;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            margin-bottom: 10px; /* Spacing from the title */
+
+        }
+
+        .navbar a:hover {
+            background-color: #c0392b; /* Darker red on hover */
+            color: white;
+        }
+        
+        .navbar-logo {
+    height: 55px; /* Same height as the logo in the header */
+    float: left; /* Aligns the logo to the left side of the navbar */
+    margin-left: 10px;
+    margin-right: 10px; /* Adds some space between the logo and the first link */
+}
+
+
+        /* Style for the track and car */
+        #racetracks .track {
+            width: 100%;
+            height: 20px;
+            background-color: #ddd; /* Light grey track */
+            margin: 10px 0;
+            position: relative;
+        }
+
+        #racetracks .car {
+            width: 30px;
+            height: 20px;
+            background-color: #e74c3c; /* Red car */
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: left 0.5s ease; /* Smooth transition for car movement */
+        }
+        
+        
+        
+        
+        
+		/*Stuff for the gui*/
+		.racing-window {
+			width: 700px;
+			height: 300px;
+			margin: auto;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: #e74c3c;
+			border-radius: 20px;
+		}
+
+		.road {
+			width: 670px;
+			height: 270px;
+			background: #ddd;
+			border-radius: 50%;
+			margin: auto;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+			position: relative;
+		}
+		
+
+
+		.grass-photo {
+			width: 580px;
+			height: 200px;
+
+			border-radius: 50%;
+			justify-content: center;
+			align-content: center;
+			margin: auto;
+
+
+			box-shadow: 0px 0px 5px 0px black;
+		}
+        
+        
+    </style>
+</head>
+<body onload="connectToServer()">
+	
+
+    <div class="wrapper">
+        <div class="header">
+            <img src="F1RacerLogo.png" alt="F1 Racer Logo">
+            <h1>F1Racer, <span id="userName"></span>, playing in <span id="gameServerName"></span><span id="endOfGameMessage"></span></h1>
+        </div>
+        
+        <h1 class="game-stats">Game Statistics: 
+			<span id="numCharactersTyped"></span> characters typed. 
+        	<span id="CPM"></span> CPM. 
+        	<span id="isError"></span> = isError. 
+        	<span id="timer"></span> seconds. 
+        	<span id="percentComplete"></span> % complete.
+         </h1>
+        
+		<div class="racing-window">
+			<div class="road" id="RacingWindow">
+				<img id="carSpriteDef" class="car-sprite"
+            src="https://opengameart.org/sites/default/files/spr_estatecar_0.png" alt="car"
+            style="width: 40px; height: auto; margin: auto; position: absolute;  transform: translate(0px, -120px) scaleX(-1);">
+				<div class="grass-texture">
+					<img id="grassPhoto" class="grass-photo" src="grass.jpg" alt="grass">
+				</div>
+			</div>
+		</div>
+
+         
+         <span id="carPosition"></span>
+         
+         Prompt: <span id="prompt"></span>
+        
+			
+
+		<br />
+		<input type="text" id="typingInput" placeholder="Start typing...">
+		<br />
+		<div id="response"></div>
+        
+        <a href="PreGamingPage.html" class="button">Exit Game</a>
+        
+    </div>
+</body>
+</html>

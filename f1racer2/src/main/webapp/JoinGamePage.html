@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join Game - F1 Racer</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+function getGameServerTable() {
+    $.ajax({
+        url: window.location.origin + "/f1racer2/f1racerServlet?action=" + encodeURIComponent("JoinGamePageServlet"),
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            if (data.length === 0) {
+				document.getElementById('gameServerNote').textContent = "No games yet!";
+			}
+			else{
+				console.log(data);
+				document.getElementById('gameServerNote').textContent = "Below are all the current games. Enter the name of the game server you would like to join!";
+				var table = '<table border="1"><tr>';
+
+			    // Add the data to the table
+			    for (var i = 0; i < data.length; i++) {
+			        table += '<tr>';
+			        for (var key in data[i]) {
+			            table += '<td>' + data[i][key] + '</td>';
+			        }
+			        table += '</tr>';
+			    }
+			
+			    // Close the table HTML
+			    table += '</table>';
+			
+			    // Set the table HTML to the response element
+			    $("#gameServerTable").html(table);
+					
+			
+			} 
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+        // Call the getuserName function when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            getGameServerTable();
+        });
+    </script>
+    <style>
+        body {
+            font: 100% Lucida Sans, Verdana;
+            margin: 0;
+            padding: 0;
+            background: url('racetrack-background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            height: 50px;
+            margin-right: 20px;
+        }
+
+        h2 {
+            color: #e74c3c;
+            margin: 0;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background-color: #c0392b;
+        }
+        
+        
+        
+        
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="F1RacerLogo.png" alt="F1 Racer Logo">
+            <h2>Join a Race</h2>
+        </div>
+        <form id = "gameServerForm" action="GamingPage.html" method="get">
+            <label for="gameServerInput">Game Server Name</label>
+            <input type="text" id="gameServerInput" name="gameServerName" placeholder="Enter the name of a game server below to join."required>
+            <button type="submit" class="button">Join Game</button>
+        </form>
+        <span id="gameServerNote"></span>
+        <span id="gameServerTable"></span>
+    </div>
+<script>
+    document.getElementById('gameServerForm').addEventListener('submit', function(event) {
+	    event.preventDefault();
+	    var action = "JoinGamePageServlet";
+	    var gameServerName = document.getElementById('gameServerInput').value;
+
+        // Create an AJAX request to submit the form data
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'f1racerServlet', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+                if (response.status === 'success') {
+                    window.location.href = 'GamingPage.html'; // Change to your next page URL
+                } else {
+                    // Display error message for login failure
+                    displayErrorMessage("Game server not found. Check your spelling.");
+                }
+            }
+        };
+        xhr.send('action=' + encodeURIComponent(action) + '&gameServerName=' + encodeURIComponent(gameServerName));
+    });
+    function displayErrorMessage(message) {
+        var errorMessage = document.querySelector('.error-message');
+        if (!errorMessage) {
+            errorMessage = document.createElement('p');
+            errorMessage.classList.add('error-message');
+            document.querySelector('.container').insertBefore(errorMessage, document.querySelector('.container').firstChild);
+        }
+        errorMessage.textContent = message;
+    }
+</script>
+</body>
+</html>

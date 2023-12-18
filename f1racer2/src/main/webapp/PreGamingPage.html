@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pre-Gaming - F1 Racer</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+function getuserInfo() {
+    $.ajax({
+        url: window.location.origin + "/f1racer2/f1racerServlet?action=" + encodeURIComponent("PreGamingPageServlet"),
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            
+            if (data.userName != null) {
+				document.getElementById('userName').textContent = data.userName;
+				if (data.userName != "guest"){
+					var playerStats = document.querySelector('.player-stats');
+					playerStats.style.display = 'block';
+					document.getElementById('userName').textContent = data.userName;
+				}
+			} 
+			if (data.gamesPlayed != null) {
+				document.getElementById('gamesPlayed').textContent = data.gamesPlayed;
+            }
+            if (data.gamesWon != null) {
+                document.getElementById('gamesWon').textContent = data.gamesWon;
+            }
+            if (data.totalWordsTyped != null) {
+                document.getElementById('totalWordsTyped').textContent = data.totalWordsTyped;
+            }
+            if (data.bestWPM != null) {
+                document.getElementById('bestWPM').textContent = data.bestWPM;
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+        // Call the getuserName function when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            getuserInfo();
+        });
+    </script>
+    <!-- ... rest of your head and body content ... -->
+    <style>
+        body {
+            font: 100% Lucida Sans, Verdana;
+            margin: 20px;
+            line-height: 26px;
+            background-color: #f4f4f4;
+        }
+
+        .wrapper {
+            position: relative;
+            overflow: auto;
+            max-width: 800px;
+            margin: auto;
+            border: 2px solid #e74c3c; /* Red border */
+            border-radius: 8px; /* Rounded corners for the wrapper */
+            padding: 20px; /* Padding inside the wrapper */
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .header h1 {
+            color: #e74c3c; /* Red color for the text */
+            margin-left: 10px; /* Spacing after the image */
+        }
+        
+        .player-stats {
+			display:none;
+            font-size: 80%; /* Smaller font size for game statistics */
+            color: #e74c3c;
+            margin-left: 10px;
+            margin-top: 10px; /* Spacing from the title */
+        }
+
+        .header img {
+            height: 50px;
+        }
+
+        .racetrack-image {
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            border-radius: 8px; /* Rounded corners for the image */
+        }
+
+        .button {
+            display: block;
+            padding: 15px 25px;
+            margin: 20px auto;
+            border: 1px solid #d4d4d4;
+            background-color: #e74c3c;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            width: 200px; /* Set a fixed width for buttons */
+        }
+
+        .button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <img src="F1RacerLogo.png" alt="F1 Racer Logo">
+            <h1>Prepare to Race, <span id="userName"></span></h1>
+        </div>
+        <h1 class="player-stats">Player Statistics: <span id="gamesPlayed"></span> games played. 
+        <span id="gamesWon"></span> games won. <span id="totalWordsTyped"></span> total words typed. 
+        <span id="bestWPM"></span> = WPM highscore.
+         </h1>
+        <img src="Racetrack.png" alt="Racetrack" class="racetrack-image">
+        <a href="StartGamePage.html" class="button">Start Game</a>
+        <a href="JoinGamePage.html" class="button">Join Game</a>
+    </div>
+</body>
+</html>

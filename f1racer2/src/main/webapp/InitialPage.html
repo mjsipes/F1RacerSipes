@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>F1 Racer - Start Your Engines</title>
+    <style>
+        /* Existing Styles */
+        body {
+            font: 100% Lucida Sans, Verdana;
+            margin: 20px;
+            line-height: 26px;
+            background-color: #f4f4f4; /* Light grey background */
+        }
+
+        .wrapper {
+            position: relative;
+            overflow: auto;
+            max-width: 800px; /* Set a max-width for the wrapper */
+            margin: auto; /* Center the wrapper */
+        }
+
+        #top, #sidebar, #bottom, .menuitem {
+            border-radius: 4px;
+            margin: 4px;
+        }
+
+        #top {
+            background-color: #e74c3c; /* Red color */
+            color: #ffffff;
+            padding: 15px;
+            text-align: center; /* Center the text */
+        }
+
+        .logo {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%; /* Adjust as needed */
+            margin-bottom: 20px; /* Added space below the image */
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            border: 1px solid #d4d4d4;
+            background-color: #e74c3c; /* Red background */
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #c0392b; /* Darker shade of red on hover */
+        }
+
+        /* Modal Style */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            max-width: 400px;
+            border-radius: 8px;
+        }
+
+        .modal-button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div id="top">
+            <img src="F1RacerLogo.png" alt="F1 Racer Logo" class="logo">
+            <h1>Welcome to F1 Racer</h1>
+            <p>Experience the thrill of racing and typing as you compete against others or against the clock. Will you cross the finish line first?</p>
+            <div>
+                <a href="LogInPage.html" class="button">Log In</a>
+                <a href="RegisterPage.html" class="button">Register</a>
+                <a href="#" class="button button-play-guest">Play as Guest</a>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="guestModal" class="modal">
+            <div class="modal-content">
+                <p>When you play as a guest, your information will not be saved.</p>
+                <button class="modal-button" onclick="location.href='InitialPage.html'">Go Back</button>
+				<!-- <button class="modal-button" onclick="location.href='GuestLoginServlet'">Continue</button> -->
+				<!-- <button class="modal-button" onclick="location.href='f1racerServlet?action=' + encodeURIComponent('GuestLoginServlet')">Continue</button>-->
+				<button class="modal-button" onclick="location.href='f1racerServlet?action=GuestLoginServlet'">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle modal
+        function showModal() {
+            document.getElementById("guestModal").style.display = "block";
+        }
+
+        // Attach event to the "Play as Guest" button
+        document.querySelector(".button-play-guest").addEventListener("click", function(event) {
+            event.preventDefault();
+            showModal();
+        });
+    </script>
+</body>
+</html>
