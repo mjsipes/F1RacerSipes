@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class GeneratePrompt {
 
-    private static final String OPENAI_API_KEY = "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";
+    private static final String OPENAI_API_KEY = "";
 
   //the following 8 lines of code were provided by chatpt
     static String generatePrompt(int difficulty, String topic) {
