@@ -5,6 +5,7 @@
 F1Racer is an evolution of the classic racing game, where players not only race with random prompts but they can also create their own.
 
 F1Racer is currently in development. Here is a demo of the current progress.
+[![Video Title](https://img.youtube.com/vi/dSRiHj2qSig/0.jpg)](https://www.youtube.com/watch?v=dSRiHj2qSig)
 
 https://vimeo.com/895960265?share=copy
 
